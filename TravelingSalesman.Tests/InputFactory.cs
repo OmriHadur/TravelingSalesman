@@ -16,7 +16,8 @@ public class InputFactory
         var connections = new int[size, size];
         for (int x = 0; x < size; x++)
             for (int y = 0; y < size; y++)
-                connections[x, y] = random.Next(size) + 1;
+                if (random.Next(size) != 0)
+                    connections[x, y] = random.Next(size) + 1;
         return connections;
     }
 }
