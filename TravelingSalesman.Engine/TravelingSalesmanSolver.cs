@@ -1,6 +1,5 @@
 ﻿using TravelingSalesman.Common;
 using TravelingSalesman.Interfaces;
-using Path = TravelingSalesman.Common.TravelPath;
 
 namespace TravelingSalesman.Engine;
 
@@ -76,6 +75,6 @@ public class TravelingSalesmanSolver : ITravelingSalesmanSolver
 
     private static ITravelPath GetPath(TravelConnections connections, int start)
     {
-        return new Path(connections.Length, start);
+        return new TravelPath(connections.Length, start);
     }
 }

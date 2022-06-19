@@ -15,10 +15,10 @@ public class TravelingSalesmanSolverUnitTests
     }
 
     [Test]
-    [TestCase("Input1",0, 15)]
+    [TestCase("Input1", 0, 15)]
     [TestCase("Input2", 0, 64)]
-    [TestCase("Input3",5 ,76)]
-    public void SolutionIsCurrectTest(string fileName,int startPosition, int expectedMinimumTravel)
+    [TestCase("Input3", 5, 76)]
+    public void SolutionIsCurrectTest(string fileName, int startPosition, int expectedMinimumTravel)
     {
         var connections = InputFactory.GetFromFile(fileName);
         var result = _travelingSalesman.GetMinimumTravel(connections, startPosition);
@@ -42,6 +42,7 @@ public class TravelingSalesmanSolverUnitTests
     public void PerformanceTest(int size, int repetitions, int elapsedMilliseconds)
     {
         var connections = InputFactory.GetRandom(size);
+        _travelingSalesman.GetMinimumTravel(connections, 0);
 
         var sw = Stopwatch.StartNew();
 
