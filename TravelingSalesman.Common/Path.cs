@@ -1,4 +1,6 @@
-﻿namespace TravelingSalesman;
+﻿using TravelingSalesman.Interfaces;
+
+namespace TravelingSalesman.Common;
 
 public class Path : IPath
 {
@@ -39,7 +41,7 @@ public class Path : IPath
 
     public int LastVisited => _path[_currentIndex - 1];
 
-    public int GetLength(IConnections connections)
+    public int GetTravel(IConnections connections)
     {
         var sum = 0;
         for (int i = 0; i < _path.Length - 1; i++)

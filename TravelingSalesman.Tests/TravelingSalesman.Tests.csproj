@@ -20,4 +20,10 @@
     <ProjectReference Include="..\TravelingSalesman.Engine\TravelingSalesman.Engine.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Inputs\Input1.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

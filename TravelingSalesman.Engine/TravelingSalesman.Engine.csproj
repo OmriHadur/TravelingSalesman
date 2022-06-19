@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TravelingSalesman.Common\TravelingSalesman.Common.csproj" />
+    <ProjectReference Include="..\TravelingSalesman.Interfaces\TravelingSalesman.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

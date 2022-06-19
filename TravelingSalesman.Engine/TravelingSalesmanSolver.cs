@@ -1,29 +1,31 @@
 ﻿using TravelingSalesman.Common;
+using TravelingSalesman.Interfaces;
+using Path = TravelingSalesman.Common.Path;
 
-namespace TravelingSalesman;
+namespace TravelingSalesman.Engine;
 
 public class TravelingSalesmanSolver : ITravelingSalesmanSolver
 {
-    public int GetMinLength(int[,] connections, int start, int end)
+    public int GetMinimumTravel(int[,] connections, int start, int end)
     {
-        return GetMinLength(new Connections(connections), start, end);
+        return GetMinimumTravel(new Connections(connections), start, end);
     }
 
-    public static int GetMinLength(Connections connections, int start, int end)
+    public static int GetMinimumTravel(Connections connections, int start, int end)
     {
         var bestResult = int.MaxValue;
         var currentPath = GetPath(connections, start);
 
-        GetPathsParallel(connections, currentPath, end, path =>
+        FindPathsParallel(connections, currentPath, end, path =>
         {
-            var length = path.GetLength(connections);
+            var length = path.GetTravel(connections);
             if (length < bestResult)
                 bestResult = length;
         });
         return bestResult;
     }
 
-    private static void GetPathsParallel(IConnections connections, IPath currentPath, int end, Action<IPath> pathFound)
+    private static void FindPathsParallel(IConnections connections, IPath currentPath, int end, Action<IPath> pathFound)
     {
         Parallel.For(0, connections.Length, nextPosition =>
         {
@@ -37,12 +39,12 @@ public class TravelingSalesmanSolver : ITravelingSalesmanSolver
                         pathFound(path);
                 }
                 else
-                    GetPaths(connections, path, end, pathFound);
+                    FindPaths(connections, path, end, pathFound);
             }
         });
     }
 
-    private static void GetPaths(IConnections connections, IPath currentPath, int end, Action<IPath> pathFound)
+    private static void FindPaths(IConnections connections, IPath currentPath, int end, Action<IPath> pathFound)
     {
         for (int nextPosition = 0; nextPosition < connections.Length; nextPosition++)
         {
@@ -55,7 +57,7 @@ public class TravelingSalesmanSolver : ITravelingSalesmanSolver
                         pathFound(currentPath);
                 }
                 else
-                    GetPaths(connections, currentPath, end, pathFound);
+                    FindPaths(connections, currentPath, end, pathFound);
                 currentPath.RemoveLast();
             }
         }
@@ -67,7 +69,7 @@ public class TravelingSalesmanSolver : ITravelingSalesmanSolver
             connections.HasConnection(currentPath.LastVisited, nextPosition);
     }
 
-    private static Path GetPath(Connections connections, int start)
+    private static IPath GetPath(Connections connections, int start)
     {
         var currentPath = new Path(connections.Length);
         currentPath.AddVisit(start);
