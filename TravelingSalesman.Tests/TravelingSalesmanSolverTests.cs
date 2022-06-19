@@ -1,5 +1,4 @@
 using System.Diagnostics;
-using TravelingSalesman.Common;
 using TravelingSalesman.Engine;
 using TravelingSalesman.Interfaces;
 
@@ -16,8 +15,8 @@ public class TravelingSalesmanSolverUnitTests
     }
 
     [Test]
-    [TestCase("Input1",10)]
-    public void SolutionIsCurrectTest(string fileName,int expectedMinimumTravel)
+    [TestCase("Input1", 10)]
+    public void SolutionIsCurrectTest(string fileName, int expectedMinimumTravel)
     {
         var connections = InputFactory.GetFromFile(fileName);
         var result = _travelingSalesman.GetMinimumTravel(connections, 0, 3);
