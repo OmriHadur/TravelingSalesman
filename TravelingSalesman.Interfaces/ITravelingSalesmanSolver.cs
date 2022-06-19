@@ -2,5 +2,5 @@
 
 public interface ITravelingSalesmanSolver
 {
-    int GetMinimumTravel(int[,] connections, int start, int end);
+    int GetMinimumTravel(int[,] connections, int start);
 }

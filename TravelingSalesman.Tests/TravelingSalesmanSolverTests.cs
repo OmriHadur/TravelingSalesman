@@ -15,11 +15,13 @@ public class TravelingSalesmanSolverUnitTests
     }
 
     [Test]
-    [TestCase("Input1", 10)]
-    public void SolutionIsCurrectTest(string fileName, int expectedMinimumTravel)
+    [TestCase("Input1",0, 15)]
+    [TestCase("Input2", 0, 64)]
+    [TestCase("Input3",5 ,76)]
+    public void SolutionIsCurrectTest(string fileName,int startPosition, int expectedMinimumTravel)
     {
         var connections = InputFactory.GetFromFile(fileName);
-        var result = _travelingSalesman.GetMinimumTravel(connections, 0, 3);
+        var result = _travelingSalesman.GetMinimumTravel(connections, startPosition);
         Assert.That(result, Is.EqualTo(expectedMinimumTravel));
     }
 
@@ -30,13 +32,13 @@ public class TravelingSalesmanSolverUnitTests
     public void RandomConnectionsTest(int size)
     {
         var connections = InputFactory.GetRandom(size);
-        var result = _travelingSalesman.GetMinimumTravel(connections, 0, size - 1);
+        var result = _travelingSalesman.GetMinimumTravel(connections, 0);
         Assert.That(result, Is.LessThan(int.MaxValue));
     }
 
     [Test]
-    [TestCase(5, 1000, 25)]
-    [TestCase(10, 1, 50)]
+    [TestCase(5, 1000, 30)]
+    [TestCase(10, 1, 40)]
     public void PerformanceTest(int size, int repetitions, int elapsedMilliseconds)
     {
         var connections = InputFactory.GetRandom(size);
@@ -44,7 +46,7 @@ public class TravelingSalesmanSolverUnitTests
         var sw = Stopwatch.StartNew();
 
         for (int i = 0; i < repetitions; i++)
-            _travelingSalesman.GetMinimumTravel(connections, 0, size - 1);
+            _travelingSalesman.GetMinimumTravel(connections, 0);
 
         sw.Stop();
         Assert.That(sw.ElapsedMilliseconds, Is.LessThan(elapsedMilliseconds));

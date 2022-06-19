@@ -2,11 +2,11 @@
 
 namespace TravelingSalesman.Common;
 
-public class Connections : IConnections
+public class TravelConnections : ITravelConnections
 {
     private readonly int[,] _connections;
 
-    public Connections(int[,] connections)
+    public TravelConnections(int[,] connections)
     {
         _connections = connections;
     }

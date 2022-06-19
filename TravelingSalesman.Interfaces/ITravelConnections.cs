@@ -1,6 +1,6 @@
 ﻿namespace TravelingSalesman.Interfaces;
 
-public interface IConnections
+public interface ITravelConnections
 {
     int Length { get; }
 

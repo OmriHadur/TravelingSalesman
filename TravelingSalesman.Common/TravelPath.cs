@@ -2,7 +2,7 @@
 
 namespace TravelingSalesman.Common;
 
-public class Path : IPath
+public class TravelPath : ITravelPath
 {
     private readonly int[] _path;
 
@@ -10,13 +10,14 @@ public class Path : IPath
 
     private int _currentIndex;
 
-    public Path(int size)
+    public TravelPath(int size, int start)
     {
         _path = new int[size];
         _visited = new bool[size];
+        AddVisit(start);
     }
 
-    private Path(int[] path, bool[] visited, int currentIndex)
+    private TravelPath(int[] path, bool[] visited, int currentIndex)
     {
         _path = (int[])path.Clone();
         _visited = (bool[])visited.Clone();
@@ -41,16 +42,19 @@ public class Path : IPath
 
     public int LastVisited => _path[_currentIndex - 1];
 
-    public int GetTravel(IConnections connections)
+    public int Start => _path[0];
+
+    public int GetTravel(ITravelConnections connections)
     {
         var sum = 0;
         for (int i = 0; i < _path.Length - 1; i++)
             sum += connections.GetConnection(_path[i], _path[i + 1]);
+        sum += connections.GetConnection(_path[^1], _path[0]);
         return sum;
     }
 
     public object Clone()
     {
-        return new Path(_path, _visited, _currentIndex);
+        return new TravelPath(_path, _visited, _currentIndex);
     }
 }
