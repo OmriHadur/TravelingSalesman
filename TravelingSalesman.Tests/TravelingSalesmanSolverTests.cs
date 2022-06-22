@@ -50,6 +50,7 @@ public class TravelingSalesmanSolverUnitTests
             _travelingSalesman.GetMinimumTravel(connections, 0);
 
         sw.Stop();
+        Console.WriteLine(sw.ElapsedMilliseconds);
         Assert.That(sw.ElapsedMilliseconds, Is.LessThan(elapsedMilliseconds));
     }
 }

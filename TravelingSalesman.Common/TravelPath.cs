@@ -20,7 +20,7 @@ public class TravelPath : ITravelPath
         AddVisit(start);
     }
 
-    private TravelPath(ITravelConnections connections,
+    private TravelPath( ITravelConnections connections,
                         int[] path,
                         bool[] visited,
                         int currentIndex)
@@ -56,9 +56,8 @@ public class TravelPath : ITravelPath
         get
         {
             var sum = 0;
-            for (int i = 0; i < _path.Length - 1; i++)
-                sum += _connections.GetConnection(_path[i], _path[i + 1]);
-            sum += _connections.GetConnection(_path[^1], _path[0]);
+            for (int i = 0; i < _path.Length; i++)
+                sum += _connections.GetConnection(_path[i], _path[(i + 1) % _path.Length]);
             return sum;
         }
     }
