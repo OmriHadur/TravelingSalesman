@@ -5,29 +5,18 @@ namespace TravelingSalesman.Engine;
 
 public class TravelingSalesmanSolver : ITravelingSalesmanSolver
 {
-    public int GetMinimumTravel(int[,] connections, int start)
+    public ITravelPath? GetMinimumTravel(ITravelConnections connections, int start)
     {
-        return GetMinimumTravel(new TravelConnections(connections), start);
-    }
+        object locky = new();
+        var startPath = GetPath(connections, start);
+        ITravelPath? bestPath = null; ;
 
-    public static int GetMinimumTravel(TravelConnections connections, int start)
-    {
-        var bestResult = int.MaxValue;
-        var currentPath = GetPath(connections, start);
-
-        FindPathsParallel(connections, currentPath, path =>
-        {
-            bestResult = GetBestResult(connections, path, bestResult);
+        FindPathsParallel(connections, startPath, path => {
+            lock (locky)
+                if (bestPath == null || path.Distace < bestPath.Distace)
+                    bestPath = (ITravelPath)path.Clone();
         });
-        return bestResult;
-    }
-
-    private static int GetBestResult(TravelConnections connections, ITravelPath path, int bestResult)
-    {
-        var travelLength = path.GetTravel(connections);
-        if (travelLength < bestResult)
-            bestResult = travelLength;
-        return bestResult;
+        return bestPath;
     }
 
     private static void FindPathsParallel(ITravelConnections connections, ITravelPath currentPath, Action<ITravelPath> pathFound)
@@ -73,8 +62,8 @@ public class TravelingSalesmanSolver : ITravelingSalesmanSolver
             connections.HasConnection(currentPath.LastVisited, nextPosition);
     }
 
-    private static ITravelPath GetPath(TravelConnections connections, int start)
+    private static ITravelPath GetPath(ITravelConnections connections, int start)
     {
-        return new TravelPath(connections.Length, start);
+        return new TravelPath(connections, start);
     }
 }

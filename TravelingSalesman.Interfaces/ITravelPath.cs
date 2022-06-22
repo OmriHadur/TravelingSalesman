@@ -10,9 +10,11 @@ public interface ITravelPath : ICloneable
 
     void AddVisit(int position);
 
-    int GetTravel(ITravelConnections connections);
+    int Distace { get; }
 
     bool IsVisited(int position);
 
     void RemoveLast();
+
+    IEnumerable<int> Path { get; }
 }

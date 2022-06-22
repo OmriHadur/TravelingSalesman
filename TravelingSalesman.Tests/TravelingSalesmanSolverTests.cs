@@ -21,8 +21,8 @@ public class TravelingSalesmanSolverUnitTests
     public void SolutionIsCurrectTest(string fileName, int startPosition, int expectedMinimumTravel)
     {
         var connections = InputFactory.GetFromFile(fileName);
-        var result = _travelingSalesman.GetMinimumTravel(connections, startPosition);
-        Assert.That(result, Is.EqualTo(expectedMinimumTravel));
+        var bestPath = _travelingSalesman.GetMinimumTravel(connections, startPosition);
+        Assert.That(bestPath.Distace, Is.EqualTo(expectedMinimumTravel));
     }
 
     [Test]
@@ -32,8 +32,8 @@ public class TravelingSalesmanSolverUnitTests
     public void RandomConnectionsTest(int size)
     {
         var connections = InputFactory.GetRandom(size);
-        var result = _travelingSalesman.GetMinimumTravel(connections, 0);
-        Assert.That(result, Is.LessThan(int.MaxValue));
+        var bestPath = _travelingSalesman.GetMinimumTravel(connections, 0);
+        Assert.That(bestPath.Distace, Is.LessThan(int.MaxValue));
     }
 
     [Test]
