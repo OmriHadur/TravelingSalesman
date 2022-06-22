@@ -11,12 +11,19 @@ public class TravelingSalesmanSolver : ITravelingSalesmanSolver
         var startPath = GetPath(connections, start);
         ITravelPath? bestPath = null; ;
 
-        FindPathsParallel(connections, startPath, path => {
-            lock (locky)
-                if (bestPath == null || path.Distace < bestPath.Distace)
-                    bestPath = (ITravelPath)path.Clone();
+        FindPathsParallel(connections, startPath, path =>
+        {
+            if (IsBetter(path, bestPath))
+                lock (locky)
+                    if (IsBetter(path, bestPath))
+                        bestPath = (ITravelPath)path.Clone();
         });
         return bestPath;
+    }
+
+    private static bool IsBetter(ITravelPath path, ITravelPath? bestPath)
+    {
+        return bestPath == null || path.Distace < bestPath.Distace;
     }
 
     private static void FindPathsParallel(ITravelConnections connections, ITravelPath currentPath, Action<ITravelPath> pathFound)

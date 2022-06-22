@@ -4,7 +4,7 @@ namespace TravelingSalesman.Common;
 
 public class TravelPath : ITravelPath
 {
-    private readonly ITravelConnections _travelConnections;
+    private readonly ITravelConnections _connections;
 
     private readonly int[] _path;
 
@@ -12,44 +12,35 @@ public class TravelPath : ITravelPath
 
     private int _currentIndex;
 
-    private int _distace;
-
-    public TravelPath(ITravelConnections travelConnections, int start)
+    public TravelPath(ITravelConnections connections, int start)
     {
-        _travelConnections = travelConnections;
-        _path = new int[travelConnections.Length];
-        _visited = new bool[travelConnections.Length];
+        _connections = connections;
+        _path = new int[connections.Length];
+        _visited = new bool[connections.Length];
         AddVisit(start);
     }
 
-    private TravelPath( ITravelConnections travelConnections, 
-                        int[] path, 
-                        bool[] visited, 
-                        int currentIndex,
-                        int distace)
+    private TravelPath(ITravelConnections connections,
+                        int[] path,
+                        bool[] visited,
+                        int currentIndex)
     {
-        _travelConnections = travelConnections;
+        _connections = connections;
         _path = (int[])path.Clone();
         _visited = (bool[])visited.Clone();
         _currentIndex = currentIndex;
-        _distace = distace;
     }
 
     public bool IsVisited(int position) => _visited[position];
 
     public void AddVisit(int position)
     {
-        if (_currentIndex > 0)
-            _distace += _travelConnections.GetConnection(LastVisited, position);
         _path[_currentIndex++] = position;
         _visited[position] = true;
-        if (IsVisitedAll)
-            _distace += _travelConnections.GetConnection(LastVisited, Start);
     }
 
     public void RemoveLast()
     {
-        _distace -= _travelConnections.GetConnection(_path[_currentIndex - 2], LastVisited);
         _visited[_path[_currentIndex - 1]] = false;
         _currentIndex--;
     }
@@ -60,12 +51,22 @@ public class TravelPath : ITravelPath
 
     public int Start => _path[0];
 
-    public int Distace => _distace;
+    public int Distace
+    {
+        get
+        {
+            var sum = 0;
+            for (int i = 0; i < _path.Length - 1; i++)
+                sum += _connections.GetConnection(_path[i], _path[i + 1]);
+            sum += _connections.GetConnection(_path[^1], _path[0]);
+            return sum;
+        }
+    }
 
     public IEnumerable<int> Path => _path;
 
     public object Clone()
     {
-        return new TravelPath(_travelConnections, _path, _visited, _currentIndex, _distace);
+        return new TravelPath(_connections, _path, _visited, _currentIndex);
     }
 }
