@@ -3,7 +3,7 @@ using TravelingSalesman.Interfaces;
 
 namespace TravelingSalesman.Engine;
 
-public class TravelingSalesmanSolver : ITravelingSalesmanSolver
+public class BruteForceSolver : ITravelingSalesmanSolver
 {
     public ITravelPath? GetMinimumTravel(ITravelConnections connections, int start)
     {

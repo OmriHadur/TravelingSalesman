@@ -13,13 +13,14 @@ public class InputFactory
         return new TravelConnections(connections);
     }
 
-    public static ITravelConnections GetRandom(int size)
+    public static ITravelConnections GetRandom(int size,int connectionOdds=100)
     {
         var random = new Random();
         var connections = new int[size, size];
         for (int x = 0; x < size; x++)
             for (int y = 0; y < size; y++)
-                connections[x, y] = random.Next(size) + 1;
+                if (random.Next(100) <= connectionOdds)
+                    connections[x, y] = random.Next(size) + 1;
         return new TravelConnections(connections);
     }
 }

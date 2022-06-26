@@ -1,17 +1,16 @@
 using System.Diagnostics;
-using TravelingSalesman.Engine;
 using TravelingSalesman.Interfaces;
 
 namespace TravelingSalesman.Tests;
 
-public class TravelingSalesmanSolverUnitTests
+public abstract class BaseTravelingSalesmanSolverUnitTests
 {
     private ITravelingSalesmanSolver _travelingSalesman;
 
     [SetUp]
     public void Setup()
     {
-        _travelingSalesman = new TravelingSalesmanSolver();
+        _travelingSalesman = GetTravelingSalesmanSolver();
     }
 
     [Test]
@@ -33,12 +32,13 @@ public class TravelingSalesmanSolverUnitTests
     {
         var connections = InputFactory.GetRandom(size);
         var bestPath = _travelingSalesman.GetMinimumTravel(connections, 0);
+        Console.WriteLine(bestPath.Distace);
         Assert.That(bestPath.Distace, Is.LessThan(int.MaxValue));
     }
 
     [Test]
     [TestCase(5, 1000, 30)]
-    [TestCase(10, 1, 40)]
+    [TestCase(10, 1, 70)]
     public void PerformanceTest(int size, int repetitions, int elapsedMilliseconds)
     {
         var connections = InputFactory.GetRandom(size);
@@ -53,4 +53,6 @@ public class TravelingSalesmanSolverUnitTests
         Console.WriteLine(sw.ElapsedMilliseconds);
         Assert.That(sw.ElapsedMilliseconds, Is.LessThan(elapsedMilliseconds));
     }
+
+    protected abstract ITravelingSalesmanSolver GetTravelingSalesmanSolver();
 }

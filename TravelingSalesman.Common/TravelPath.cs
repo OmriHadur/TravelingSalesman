@@ -20,7 +20,7 @@ public class TravelPath : ITravelPath
         AddVisit(start);
     }
 
-    private TravelPath( ITravelConnections connections,
+    private TravelPath(ITravelConnections connections,
                         int[] path,
                         bool[] visited,
                         int currentIndex)
